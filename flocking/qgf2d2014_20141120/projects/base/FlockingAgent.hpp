@@ -39,7 +39,7 @@ namespace FA
 	*/
 	class FlockingAgent : public sf::Drawable{
 	public:
-		FlockingAgent() :mMaxAccel(0), mIsPrey(true){}
+		FlockingAgent() :mMaxAccel(0), mIsPrey(true), mIsSuper(false){}
 		virtual ~FlockingAgent(){}
 
 		//called once before any update calls per frame, used to prepare data and reset caches
@@ -77,6 +77,7 @@ namespace FA
 		PUBLIC_DATA_PROPERTY(SensorArray, SensorArray);
 		PUBLIC_DATA_PROPERTY(float, MaxAccel);
 		PUBLIC_DATA_PROPERTY(bool, IsPrey);
+		PUBLIC_DATA_PROPERTY(bool, IsSuper);
 		PUBLIC_PTR_PROPERTY(sf::CircleShape, CentreCircle);
 		PUBLIC_PTR_PROPERTY(sf::ConvexShape, GroupingFan);
 
