@@ -17,6 +17,8 @@ FA::Scene::~Scene()
 void FA::Scene::Update(float dt)
 {
 	//prep all
+
+	
 	for (auto f : mAgents)
 	{
 		f->Prepare();

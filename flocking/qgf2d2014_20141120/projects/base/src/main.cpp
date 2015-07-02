@@ -1,4 +1,5 @@
 #include "SFML/Graphics.hpp"
+#include "SFML/Audio.hpp"
 #include <omp.h>
 #include "cmath"
 #include "kf/kf_log.h"
@@ -18,6 +19,8 @@ using namespace sf;
 
 int main()
 {
+	int threads = omp_get_max_threads() * 4;
+	omp_set_num_threads(threads);
 	// This sets the working directory to where the executable is.
 	initDirectory();
 
@@ -28,6 +31,10 @@ int main()
 
 	//start the app
 	FA::App::Instance().Init();
+
+	//sf::Music music;
+	//music.openFromFile("resources/epicmusic.wav");
+	//music.play();
 
 	//add some place holder agents, preds and obs to demonstrate functionality
 
@@ -45,8 +52,9 @@ int main()
 	p.spec.SetHeading(FA::SensorSpecification(30, 30, 90, 90, 50, 50));
 	p.spec.SetSpeed(FA::SensorSpecification(40, 40, 70, 70, 20, 20));
 	p.spec.SetFlee(FA::SensorSpecification(40, 40, 180, 180, 220, 220));
-	
-	for (int i = 0; i < 500; ++i)
+	p.spec.SetChase(FA::SensorSpecification(240, 240, 90, 90, 1000, 1000));
+
+	for (int i = 0; i < 1000; ++i)
 	{
 		FA::App::Instance().GetAgentFactory()->Create(p);
 	}
@@ -54,7 +62,6 @@ int main()
 
 #pragma region pred
 	p.isPrey = false;
-	p.spec.SetChase(FA::SensorSpecification(240, 240, 90, 90, 1000, 1000));
 	
 	for (int i = 0; i < 3; i++)
 	{

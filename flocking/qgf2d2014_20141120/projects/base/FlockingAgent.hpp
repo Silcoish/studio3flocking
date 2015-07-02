@@ -2,6 +2,8 @@
 #define FLOCKINGAGENT_H
 
 //HACK: only include the things you actually need
+#include <iostream>
+#include <omp.h>
 #include <SFML/Graphics.hpp>
 #include <Box2D\Box2D.h>
 #include <kf\kf_vector.h>

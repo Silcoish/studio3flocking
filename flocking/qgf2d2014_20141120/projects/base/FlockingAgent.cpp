@@ -73,19 +73,23 @@ void FA::FlockingAgent::Prepare()
 
 void FA::FlockingAgent::Update(float dt, FlockingAgent** agents, size_t count)
 {
+	#pragma omp parallel for
 	for (int i = 0; i < count; ++i)
 	{
 		//don't try to flock with yourself
 		if (agents[i] == this) continue;
 
+		//if preditor and other agent is prey
 		if (!mIsPrey && agents[i]->GetIsPrey())
 		{
 			PredChaseUpdate(i, dt, agents, count);
 		}
+		//if prey and other agent is predator
 		else if (mIsPrey && !agents[i]->GetIsPrey())
 		{
 			PreyFleeUpdate(i, dt, agents, count);
 		}
+		//if prey and other agent is prey
 		else if (mIsPrey && agents[i]->GetIsPrey())
 		{
 			PreyPreyUpdate(i, dt, agents, count);
@@ -103,7 +107,13 @@ void FA::FlockingAgent::PredChaseUpdate(int i, float dt, FlockingAgent** agents,
 		if (mChaseCache.count == 0 || mChaseCache.vec.length_squared() > diff.length_squared())
 		{
 			mChaseCache.vec = diff;
-			mChaseCache.count++;
+			if (diff.length_squared() < 4)
+			{
+				agents[i]->SetIsPrey(false);
+			}
+			else
+				mChaseCache.count++;
+
 		}
 	}
 }
