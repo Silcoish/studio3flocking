@@ -194,3 +194,12 @@ FakesAssemblies/
 
 # Visual Studio 6 workspace options file
 *.opt
+
+# Ignore qgf2d
+flocking/qgf2d2014_20141120/bin/
+flocking/qgf2d2014_20141120/dev/
+flocking/qgf2d2014_20141120/temp/
+flocking/qgf2d2014_20141120/projects/drop.bat
+flocking/qgf2d2014_20141120/qgf2d.sdf
+flocking/qgf2d2014_20141120/qgf2d.sln
+flocking/qgf2d2014_20141120/gqf2d.v12.suo
