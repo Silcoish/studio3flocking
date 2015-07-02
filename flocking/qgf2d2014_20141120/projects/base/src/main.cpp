@@ -63,23 +63,27 @@ int main()
 
 #pragma endregion
 
-#pragma region rect_obs
+#pragma region walls
 	FA::ObstacleFactory::Params op;
-
-	op.size = kf::Vector2f(20, 20);
-	op.pos = kf::Vector2f(120, 0);
-	op.rotation = 25 * DEG2RAD;
+	op.size = kf::Vector2f(400, 2);
+	op.pos = kf::Vector2f(0, -200);
+	op.rotation = 0;
 	op.type = FA::Obstacle::Type::Rect;
 
 	FA::App::Instance().GetObstacleFactory()->Create(op);
 
-#pragma endregion
+	op.pos = kf::Vector2f(0, 200);
 
-#pragma region circ_obs
-	op.pos = kf::Vector2f(230, 0);
-	op.type = FA::Obstacle::Type::Circ;
 	FA::App::Instance().GetObstacleFactory()->Create(op);
 
+	op.size = kf::Vector2f(2, 400);
+	op.pos = kf::Vector2f(-200, 0);
+
+	FA::App::Instance().GetObstacleFactory()->Create(op);
+
+	op.pos = kf::Vector2f(200, 0);
+
+	FA::App::Instance().GetObstacleFactory()->Create(op);
 #pragma endregion
 
 	//let the simulation go
