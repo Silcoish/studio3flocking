@@ -5,11 +5,13 @@
 #include <iostream>
 #include <SFML\Graphics.hpp>
 #include <Box2D\Box2D.h>
+#include <TGUI/TGUI.hpp>
 
 #include "FlockingAgentFactory.hpp"
 #include "ObstacleFactory.hpp"
 #include "Macros.hpp"
 #include "Scene.hpp"
+#include "GUI.h"
 
 namespace FA
 {
@@ -28,6 +30,7 @@ namespace FA
 
 	protected:
 		RO_PTR_PROPERTY(sf::RenderWindow, Window);
+		RO_PTR_PROPERTY(GUI, Gui);
 		RO_PTR_PROPERTY(sf::Clock, Clock);
 		RO_DATA_PROPERTY(bool, IsRunning);
 		RO_DATA_PROPERTY(bool, IsInit);

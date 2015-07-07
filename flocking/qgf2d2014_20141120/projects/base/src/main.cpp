@@ -32,9 +32,9 @@ int main()
 	//start the app
 	FA::App::Instance().Init();
 
-	//sf::Music music;
-	//music.openFromFile("resources/epicmusic.wav");
-	//music.play();
+	sf::Music music;
+	music.openFromFile("resources/epicmusic.wav");
+	music.play();
 
 	//add some place holder agents, preds and obs to demonstrate functionality
 
