@@ -30,7 +30,7 @@ namespace FA
 
 	protected:
 		RO_PTR_PROPERTY(sf::RenderWindow, Window);
-		RO_PTR_PROPERTY(GUI, Gui);
+		//RO_PTR_PROPERTY(GUI, Gui);
 		RO_PTR_PROPERTY(sf::Clock, Clock);
 		RO_DATA_PROPERTY(bool, IsRunning);
 		RO_DATA_PROPERTY(bool, IsInit);

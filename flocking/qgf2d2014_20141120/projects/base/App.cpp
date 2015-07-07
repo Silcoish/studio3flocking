@@ -16,7 +16,7 @@ bool FA::App::Init()
 	
 	//create window, worlds, factories, etc.
 	mWindow = new sf::RenderWindow(sf::VideoMode(800, 800, 32), WINDOW_TITLE, sf::Style::Close);
-	//mGui = new tgui::Gui(*mWindow);
+	//mGui = new GUI(mWindow);
 	mWindow->setVerticalSyncEnabled(true);
 	mClock = new sf::Clock();
 	mPhysWorld = new b2World(b2Vec2_zero);
