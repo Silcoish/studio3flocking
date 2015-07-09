@@ -13,8 +13,8 @@ public:
 	GUI(sf::RenderWindow* renderWindow);
 	~GUI();
 
-	/*void HandleEvent(sf::Event* e);
-	void HandleDraw(sf::RenderWindow* renderWindow);*/
+	void HandleEvent(sf::Event* e);
+	void HandleDraw(sf::RenderWindow* renderWindow);
 };
 
 #endif

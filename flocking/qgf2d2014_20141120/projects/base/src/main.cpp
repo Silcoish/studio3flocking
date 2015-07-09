@@ -11,6 +11,8 @@
 #include "ObstacleFactory.hpp"
 #include "FlockingAgentSpecification.hpp"
 #include "App.hpp"
+#include "CSVParser.h"
+
 
 using namespace std;
 using namespace qgf;
@@ -32,32 +34,39 @@ int main()
 	//start the app
 	FA::App::Instance().Init();
 
-	sf::Music music;
-	music.openFromFile("resources/epicmusic.wav");
-	music.play();
+	//sf::Music music;
+	//music.openFromFile("resources/epicmusic.wav");
+	//music.play();
+
+	CSVParser parser;
+	parser.LoadFromFile("resources/csv/FlockingData.csv");
 
 	//add some place holder agents, preds and obs to demonstrate functionality
 
 #pragma region prey
 	FA::AgentFactory::Params p;
 
-	p.spawnAt.SetRadius(Range(0,30));
-	p.accel = Range(500, 1000);
-	p.startingVel.SetRadius(Range(-2, 2));
-
-	p.size = Range(1, 1);
-	p.mass = Range(4, 4);
-	p.spec.SetAvoidance(FA::SensorSpecification(25, 25, 180, 180, 80, 80));
-	p.spec.SetGrouping(FA::SensorSpecification(50, 50, 120, 120, 50, 50));
-	p.spec.SetHeading(FA::SensorSpecification(30, 30, 90, 90, 50, 50));
-	p.spec.SetSpeed(FA::SensorSpecification(40, 40, 70, 70, 20, 20));
-	p.spec.SetFlee(FA::SensorSpecification(40, 40, 180, 180, 220, 220));
-	p.spec.SetChase(FA::SensorSpecification(240, 240, 90, 90, 1000, 1000));
-
-	for (int i = 0; i < 1000; ++i)
+	int x = 1;
+	for (int i = 0; i < parser.mRows.size(); i++)
 	{
+		p.spawnAt.SetRadius(Range(parser.GetDataFloat(i, x), parser.GetDataFloat(i, x)));
+		p.accel = Range(parser.GetDataFloat(i, x), parser.GetDataFloat(i, x));
+		p.startingVel.SetRadius(Range(parser.GetDataFloat(i, x), parser.GetDataFloat(i, x)));
+
+		p.size = Range(parser.GetDataFloat(i, x), parser.GetDataFloat(i, x));
+		p.mass = Range(parser.GetDataFloat(i, x), parser.GetDataFloat(i, x));
+		p.spec.SetAvoidance(FA::SensorSpecification(parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x)));
+		p.spec.SetGrouping(FA::SensorSpecification(parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x)));
+		p.spec.SetHeading(FA::SensorSpecification(parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x)));
+		p.spec.SetSpeed(FA::SensorSpecification(parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x)));
+		p.spec.SetFlee(FA::SensorSpecification(parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x)));
+		p.spec.SetChase(FA::SensorSpecification(parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x)));
+
 		FA::App::Instance().GetAgentFactory()->Create(p);
+
+		x = 1;
 	}
+	
 #pragma endregion
 
 #pragma region pred

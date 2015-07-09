@@ -16,7 +16,7 @@ bool FA::App::Init()
 	
 	//create window, worlds, factories, etc.
 	mWindow = new sf::RenderWindow(sf::VideoMode(800, 800, 32), WINDOW_TITLE, sf::Style::Close);
-	//mGui = new GUI(mWindow);
+	mGui = new GUI(mWindow);
 	mWindow->setVerticalSyncEnabled(true);
 	mClock = new sf::Clock();
 	mPhysWorld = new b2World(b2Vec2_zero);
@@ -53,6 +53,8 @@ void FA::App::Run()
 				break;
 			}
 
+			mGui->HandleEvent(&ev);
+
 			if (ev.type == sf::Event::KeyPressed && ev.key.code == sf::Keyboard::Key::Pause)
 				Debug::Instance().SetEnabled(!Debug::Instance().GetEnabled());
 		}
@@ -71,6 +73,8 @@ void FA::App::Run()
 
 		//render scene
 		mScene->Render(*mWindow);
+		mGui->HandleDraw(mWindow);
+		
 
 		Debug::Instance().DrawAll(*mWindow);
 
