@@ -196,6 +196,11 @@ FakesAssemblies/
 *.opt
 
 # Ignore qgf2d
+!flocking/qgf2d2014_20141120/bin/
+
+flocking/qgf2d2014_20141120/bin/*
+!flocking/qgf2d2014_20141120/bin/resources/
+
 flocking/qgf2d2014_20141120/bin/
 flocking/qgf2d2014_20141120/dev/
 flocking/qgf2d2014_20141120/temp/
