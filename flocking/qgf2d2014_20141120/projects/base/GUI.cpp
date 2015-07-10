@@ -1,6 +1,6 @@
 #include "GUI.h"
 
-#define THEME_CONFIG_FILE "C:/Users/cunderdown/Downloads/qgf2d2014_20141120/bin/widgets/Black.conf"
+#define THEME_CONFIG_FILE "resources/widgets/Black.conf"
 
 GUI::GUI(sf::RenderWindow* renderWindow)
 {

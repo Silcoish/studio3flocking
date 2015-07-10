@@ -39,7 +39,8 @@ int main()
 	//music.play();
 
 	CSVParser parser;
-	parser.LoadFromFile("resources/csv/FlockingData.csv");
+	if (!parser.LoadFromFile("resources/csv/FlockingData.csv"))
+		std::cout << "Failed to load file to parse" << std::endl;
 
 	//add some place holder agents, preds and obs to demonstrate functionality
 
