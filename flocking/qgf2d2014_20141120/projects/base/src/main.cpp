@@ -38,69 +38,72 @@ int main()
 	//music.openFromFile("resources/epicmusic.wav");
 	//music.play();
 
-	CSVParser parser;
-	if (!parser.LoadFromFile("resources/csv/FlockingData.csv"))
-		std::cout << "Failed to load file to parse" << std::endl;
-
-	//add some place holder agents, preds and obs to demonstrate functionality
-
-#pragma region prey
-	FA::AgentFactory::Params p;
-
-	int x = 1;
-	for (int i = 0; i < parser.mRows.size(); i++)
+#pragma region Parser
 	{
-		p.spawnAt.SetRadius(Range(parser.GetDataFloat(i, x), parser.GetDataFloat(i, x)));
-		p.accel = Range(parser.GetDataFloat(i, x), parser.GetDataFloat(i, x));
-		p.startingVel.SetRadius(Range(parser.GetDataFloat(i, x), parser.GetDataFloat(i, x)));
+		CSVParser parser;
+		if (!parser.LoadFromFile("resources/csv/FlockingData.csv"))
+			std::cout << "Failed to load file to parse" << std::endl;
 
-		p.size = Range(parser.GetDataFloat(i, x), parser.GetDataFloat(i, x));
-		p.mass = Range(parser.GetDataFloat(i, x), parser.GetDataFloat(i, x));
-		p.spec.SetAvoidance(FA::SensorSpecification(parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x)));
-		p.spec.SetGrouping(FA::SensorSpecification(parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x)));
-		p.spec.SetHeading(FA::SensorSpecification(parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x)));
-		p.spec.SetSpeed(FA::SensorSpecification(parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x)));
-		p.spec.SetFlee(FA::SensorSpecification(parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x)));
-		p.spec.SetChase(FA::SensorSpecification(parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x)));
+		//add some place holder agents, preds and obs to demonstrate functionality
 
-		FA::App::Instance().GetAgentFactory()->Create(p);
+#pragma region birds
+		FA::AgentFactory::Params p;
 
-		x = 1;
-	}
-	
+		int x = 0;
+		for (int i = 0; i < parser.mRows.size(); i++)
+		{
+			//std::cout << (parser.GetDataString(i, x));
+			if (parser.GetDataString(i, x).compare("TRUE") != 0)
+				p.isPrey = true;
+			else
+				p.isPrey = false;
+
+			p.spawnAt.SetRadius(Range(parser.GetDataFloat(i, x), parser.GetDataFloat(i, x)));
+			p.accel = Range(parser.GetDataFloat(i, x), parser.GetDataFloat(i, x));
+			p.startingVel.SetRadius(Range(parser.GetDataFloat(i, x), parser.GetDataFloat(i, x)));
+
+			p.size = Range(parser.GetDataFloat(i, x), parser.GetDataFloat(i, x));
+			p.mass = Range(parser.GetDataFloat(i, x), parser.GetDataFloat(i, x));
+			p.spec.SetAvoidance(FA::SensorSpecification(parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x)));
+			p.spec.SetGrouping(FA::SensorSpecification(parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x)));
+			p.spec.SetHeading(FA::SensorSpecification(parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x)));
+			p.spec.SetSpeed(FA::SensorSpecification(parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x)));
+			p.spec.SetFlee(FA::SensorSpecification(parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x)));
+			p.spec.SetChase(FA::SensorSpecification(parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x)));
+
+			FA::App::Instance().GetAgentFactory()->Create(p);
+
+			x = 0;
+		}
 #pragma endregion
 
-#pragma region pred
-	p.isPrey = false;
-	
-	for (int i = 0; i < 3; i++)
-	{
-		FA::App::Instance().GetAgentFactory()->Create(p);
-	}
+		parser.Unload();
 
-#pragma endregion
+		parser.LoadFromFile("resources/csv/ObstacleData.csv");
+
 
 #pragma region walls
-	FA::ObstacleFactory::Params op;
-	op.size = kf::Vector2f(400, 2);
-	op.pos = kf::Vector2f(0, -200);
-	op.rotation = 0;
-	op.type = FA::Obstacle::Type::Rect;
+		FA::ObstacleFactory::Params op;
 
-	FA::App::Instance().GetObstacleFactory()->Create(op);
+		x = 0;
+		for (int j = 0; j < parser.mRows.size(); j++)
+		{
+			if (parser.GetDataString(j, x).compare("SQUARE") != 0)
+				op.type = FA::Obstacle::Type::Rect;
+			else
+				op.type = FA::Obstacle::Type::Circ;
 
-	op.pos = kf::Vector2f(0, 200);
+			op.size = kf::Vector2f(parser.GetDataFloat(j, x), parser.GetDataFloat(j, x));
+			op.pos = kf::Vector2f(parser.GetDataFloat(j, x), parser.GetDataFloat(j, x));
+			op.rotation = parser.GetDataFloat(j, x);
 
-	FA::App::Instance().GetObstacleFactory()->Create(op);
+			FA::App::Instance().GetObstacleFactory()->Create(op);
 
-	op.size = kf::Vector2f(2, 400);
-	op.pos = kf::Vector2f(-200, 0);
+			x = 0;
+		}
+#pragma endregion
 
-	FA::App::Instance().GetObstacleFactory()->Create(op);
-
-	op.pos = kf::Vector2f(200, 0);
-
-	FA::App::Instance().GetObstacleFactory()->Create(op);
+	}
 #pragma endregion
 
 	//let the simulation go

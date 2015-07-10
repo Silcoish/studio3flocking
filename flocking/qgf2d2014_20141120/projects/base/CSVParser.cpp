@@ -26,6 +26,9 @@ bool CSVParser::LoadFromFile(const std::string& fl)
 			if (loopNum == 1 || loopNum == 2)
 				continue;
 
+			if (line[0] == ',')
+				continue;
+
 			mRows.push_back(new CSVRow());
 
 			std::size_t len = line.size();
@@ -60,7 +63,22 @@ float CSVParser::GetDataFloat(int index, int& value)
 	return std::stof(mRows[index]->mData[value - 1]);
 }
 
-std::string& CSVParser::GetDataString(int index, int value)
+std::string CSVParser::GetDataString(int index, int& value)
 {
-	return mRows[index]->mData[value];
+	value++;
+	return mRows[index]->mData[value - 1];
+}
+
+void CSVParser::Unload()
+{
+	for (auto &a : mRows)
+	{
+		std::cout << a->mData.size() << std::endl;
+		a->mData.clear();
+		std::cout << a->mData.size() << std::endl;
+	}
+
+	mRows.clear();
+
+	std::cout << "Cleaned up parser memory" << std::endl;
 }
