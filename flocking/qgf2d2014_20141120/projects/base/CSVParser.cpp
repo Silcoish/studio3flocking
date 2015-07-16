@@ -73,9 +73,7 @@ void CSVParser::Unload()
 {
 	for (auto &a : mRows)
 	{
-		std::cout << a->mData.size() << std::endl;
 		a->mData.clear();
-		std::cout << a->mData.size() << std::endl;
 	}
 
 	mRows.clear();

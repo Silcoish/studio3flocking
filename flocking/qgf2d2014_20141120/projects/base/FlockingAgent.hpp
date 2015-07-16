@@ -9,6 +9,7 @@
 #include <kf\kf_vector.h>
 
 #include "FlockingAgentSpecification.hpp"
+#include "Stats.h"
 
 namespace FA
 {
@@ -39,8 +40,14 @@ namespace FA
 	*/
 	class FlockingAgent : public sf::Drawable{
 	public:
-		FlockingAgent() :mMaxAccel(0), mIsPrey(true), mIsSuper(false){}
-		virtual ~FlockingAgent(){}
+		FlockingAgent() :mMaxAccel(0), mIsPrey(true), mIsSuper(false), mLifeTime(0){}
+		
+		virtual ~FlockingAgent()
+		{
+			std::cout << "Dead" << std::endl;
+			if(mIsPrey)
+				Stats::getInstance().lifeTimes.push_back(mLifeTime);
+		}
 
 		//called once before any update calls per frame, used to prepare data and reset caches
 		virtual void Prepare();
@@ -80,6 +87,9 @@ namespace FA
 		PUBLIC_DATA_PROPERTY(bool, IsSuper);
 		PUBLIC_PTR_PROPERTY(sf::CircleShape, CentreCircle);
 		PUBLIC_PTR_PROPERTY(sf::ConvexShape, GroupingFan);
+
+		//Stats
+		float mLifeTime = 0.0f;
 
 		SesnsorCache mHeadingCache, mGroupingCache, mAvoidanceCache, mSpeedCache, mFleeCache, mChaseCache;
 

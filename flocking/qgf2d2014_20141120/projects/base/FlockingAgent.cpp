@@ -73,6 +73,9 @@ void FA::FlockingAgent::Prepare()
 
 void FA::FlockingAgent::Update(float dt, FlockingAgent** agents, size_t count)
 {
+	if (mIsPrey)
+		mLifeTime += dt;
+
 	#pragma omp parallel for
 	for (int i = 0; i < count; ++i)
 	{
@@ -110,6 +113,7 @@ void FA::FlockingAgent::PredChaseUpdate(int i, float dt, FlockingAgent** agents,
 			if (diff.length_squared() < 4)
 			{
 				agents[i]->SetIsPrey(false);
+				Stats::getInstance().lifeTimes.push_back(agents[i]->mLifeTime);
 			}
 			else
 				mChaseCache.count++;

@@ -17,7 +17,7 @@ bool FA::App::Init()
 	//create window, worlds, factories, etc.
 	mWindow = new sf::RenderWindow(sf::VideoMode(800, 800, 32), WINDOW_TITLE, sf::Style::Close);
 	mGui = new GUI(mWindow);
-	mWindow->setVerticalSyncEnabled(true);
+	mWindow->setVerticalSyncEnabled(false);
 	mClock = new sf::Clock();
 	mPhysWorld = new b2World(b2Vec2_zero);
 	mAgentFactory = new FA::AgentFactory(mPhysWorld);
@@ -87,6 +87,14 @@ void FA::App::Run()
 			mWindow->setTitle(WINDOW_TITLE + std::to_string(frames));
 			frameRateClock.restart();
 		}
+	}
+
+	std::vector<FlockingAgent*> agents;
+	mScene->AgentListCopy(agents);
+	for (auto *a : agents)
+	{
+		if (a->GetIsPrey())
+			Stats::getInstance().lifeTimes.push_back(a->mLifeTime);
 	}
 }
 

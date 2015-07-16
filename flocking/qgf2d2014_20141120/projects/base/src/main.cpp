@@ -13,6 +13,7 @@
 #include "App.hpp"
 #include "CSVParser.h"
 
+#include "Stats.h";
 
 using namespace std;
 using namespace qgf;
@@ -53,7 +54,8 @@ int main()
 		for (int i = 0; i < parser.mRows.size(); i++)
 		{
 			//std::cout << (parser.GetDataString(i, x));
-			if (parser.GetDataString(i, x).compare("TRUE") != 0)
+			int howMany = parser.GetDataFloat(i, x);
+			if (parser.GetDataString(i, x).compare("TRUE") == 0)
 				p.isPrey = true;
 			else
 				p.isPrey = false;
@@ -71,7 +73,8 @@ int main()
 			p.spec.SetFlee(FA::SensorSpecification(parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x)));
 			p.spec.SetChase(FA::SensorSpecification(parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x)));
 
-			FA::App::Instance().GetAgentFactory()->Create(p);
+			for (int h = 0; h < howMany; h++)
+				FA::App::Instance().GetAgentFactory()->Create(p);
 
 			x = 0;
 		}
@@ -108,6 +111,9 @@ int main()
 
 	//let the simulation go
 	FA::App::Instance().Run();
+
+	//Save stats then exit
+	Stats::getInstance().SaveCSV();
 
 	return 0;
 }

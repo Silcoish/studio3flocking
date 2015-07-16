@@ -59,7 +59,7 @@
       <WarningLevel>Level3</WarningLevel>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>tgui-d.lib;sfml-system_d.lib;sfml-window_d.lib;sfml-graphics_d.lib;sfml-audio_d.lib;sfml-network_d.lib;qgf2dutil_d.lib;box2d_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>tgui-d.lib;sfml-system_d.lib;sfml-window_d.lib;sfml-graphics_d.lib;sfml-audio_d.lib;sfml-network_d.lib;qgf2dutil_d.lib;box2d_d.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <AdditionalLibraryDirectories>$(SolutionDir)dev\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -104,9 +104,15 @@
     </ClCompile>
     <ClCompile Include="Obstacle.cpp" />
     <ClCompile Include="ObstacleFactory.cpp" />
+    <ClCompile Include="OpenGL.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="Quadtree.cpp" />
     <ClCompile Include="Scene.cpp" />
-    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\main.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Stats.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.hpp" />
@@ -124,6 +130,7 @@
     <ClInclude Include="Quadtree.h" />
     <ClInclude Include="Range.hpp" />
     <ClInclude Include="Scene.hpp" />
+    <ClInclude Include="Stats.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
