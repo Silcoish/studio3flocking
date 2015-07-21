@@ -66,12 +66,15 @@ int main()
 
 			p.size = Range(parser.GetDataFloat(i, x), parser.GetDataFloat(i, x));
 			p.mass = Range(parser.GetDataFloat(i, x), parser.GetDataFloat(i, x));
+			
 			p.spec.SetAvoidance(FA::SensorSpecification(parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x)));
 			p.spec.SetGrouping(FA::SensorSpecification(parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x)));
 			p.spec.SetHeading(FA::SensorSpecification(parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x)));
 			p.spec.SetSpeed(FA::SensorSpecification(parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x)));
 			p.spec.SetFlee(FA::SensorSpecification(parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x)));
 			p.spec.SetChase(FA::SensorSpecification(parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x), parser.GetDataFloat(i, x)));
+
+			p.collisionRange = parser.GetDataFloat(i, x);
 
 			for (int h = 0; h < howMany; h++)
 				FA::App::Instance().GetAgentFactory()->Create(p);

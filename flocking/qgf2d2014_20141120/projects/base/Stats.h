@@ -10,6 +10,8 @@ class Stats
 {
 public:
 	std::vector<float> lifeTimes;
+	std::vector<float> speeds;
+	std::vector<float> sizes;
 
 public:
 	static Stats& getInstance()

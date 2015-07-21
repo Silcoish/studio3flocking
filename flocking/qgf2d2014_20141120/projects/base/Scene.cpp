@@ -1,12 +1,15 @@
 #include "Scene.hpp"
 #include "packetformat.h"
 
+#include <omp.h>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Network.hpp>
 
+unsigned int nProcessors = omp_get_max_threads();
+
 FA::Scene::Scene()
 {
-
+	omp_set_num_threads(nProcessors * 4);
 }
 
 FA::Scene::~Scene()
@@ -18,22 +21,24 @@ void FA::Scene::Update(float dt)
 {
 	//prep all
 
-	
-	for (auto f : mAgents)
+#pragma omp parallel for
+	for (int a = 0; a < mAgents.size(); a++)
 	{
-		f->Prepare();
+		mAgents[a]->Prepare();
 	}
 
 	//pass all agents to all
-	for (auto f : mAgents)
+	#pragma omp parallel for
+	for (int f = 0; f < mAgents.size(); f++)
 	{
-		f->Update(dt, &mAgents[0], mAgents.size());
+		mAgents[f]->Update(dt, &mAgents[0], mAgents.size());
 	}
 
 	//finalise all
-	for (auto f : mAgents)
+	#pragma omp parallel for
+	for (int c = 0; c < mAgents.size(); c++)
 	{
-		f->Finalise(dt);
+		mAgents[c]->Finalise(dt);
 	}
 }
 
@@ -91,5 +96,16 @@ void FA::Scene::Render(sf::RenderWindow& rw)
 		c.y = f->GetPosition().y + 400;
 
 		sock.send(&c, sizeof(c), ip, 1300);*/
+	}
+}
+
+void FA::Scene::UpdateHeatmap(Heatmap* heatmap)
+{
+	for (auto a : mAgents)
+	{
+		if (a->GetIsPrey())
+			heatmap->SetPos(a->GetPosition().x, a->GetPosition().y, sf::Color(0, 0, 255, 255));
+		else
+			heatmap->SetPos(a->GetPosition().x, a->GetPosition().y, sf::Color(255, 0, 0, 255));
 	}
 }

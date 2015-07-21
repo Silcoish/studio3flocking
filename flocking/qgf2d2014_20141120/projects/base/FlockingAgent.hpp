@@ -3,6 +3,7 @@
 
 //HACK: only include the things you actually need
 #include <iostream>
+#include <chrono>
 #include <omp.h>
 #include <SFML/Graphics.hpp>
 #include <Box2D\Box2D.h>
@@ -10,6 +11,12 @@
 
 #include "FlockingAgentSpecification.hpp"
 #include "Stats.h"
+
+struct SpeedTotal
+{
+	float total = 0;
+	int i = 0;
+};
 
 namespace FA
 {
@@ -40,14 +47,9 @@ namespace FA
 	*/
 	class FlockingAgent : public sf::Drawable{
 	public:
-		FlockingAgent() :mMaxAccel(0), mIsPrey(true), mIsSuper(false), mLifeTime(0){}
+		FlockingAgent() :mMaxAccel(0), mIsPrey(true), mLifeTime(0){  }
 		
-		virtual ~FlockingAgent()
-		{
-			std::cout << "Dead" << std::endl;
-			if(mIsPrey)
-				Stats::getInstance().lifeTimes.push_back(mLifeTime);
-		}
+		virtual ~FlockingAgent(){}
 
 		//called once before any update calls per frame, used to prepare data and reset caches
 		virtual void Prepare();
@@ -84,12 +86,13 @@ namespace FA
 		PUBLIC_DATA_PROPERTY(SensorArray, SensorArray);
 		PUBLIC_DATA_PROPERTY(float, MaxAccel);
 		PUBLIC_DATA_PROPERTY(bool, IsPrey);
-		PUBLIC_DATA_PROPERTY(bool, IsSuper);
+		PUBLIC_DATA_PROPERTY(float, CollisionRange);
 		PUBLIC_PTR_PROPERTY(sf::CircleShape, CentreCircle);
 		PUBLIC_PTR_PROPERTY(sf::ConvexShape, GroupingFan);
 
 		//Stats
-		float mLifeTime = 0.0f;
+		PUBLIC_DATA_PROPERTY(float, LifeTime);
+		PUBLIC_DATA_PROPERTY(SpeedTotal, Speedtotal);
 
 		SesnsorCache mHeadingCache, mGroupingCache, mAvoidanceCache, mSpeedCache, mFleeCache, mChaseCache;
 

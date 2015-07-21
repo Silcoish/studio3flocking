@@ -102,10 +102,12 @@
     <ClCompile Include="GUI.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="Heatmap.cpp" />
     <ClCompile Include="Obstacle.cpp" />
     <ClCompile Include="ObstacleFactory.cpp" />
     <ClCompile Include="OpenGL.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Quadtree.cpp" />
     <ClCompile Include="Scene.cpp" />
@@ -123,6 +125,7 @@
     <ClInclude Include="FlockingAgentFactory.hpp" />
     <ClInclude Include="FlockingAgentSpecification.hpp" />
     <ClInclude Include="GUI.h" />
+    <ClInclude Include="Heatmap.h" />
     <ClInclude Include="Macros.hpp" />
     <ClInclude Include="Obstacle.hpp" />
     <ClInclude Include="ObstacleFactory.hpp" />

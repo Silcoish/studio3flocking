@@ -18,7 +18,6 @@ void DrawAgentSensorDebug(const kf::Vector2f& pos, const kf::Vector2f& heading, 
 }
 
 
-
 //helper to check if a local offset vector is within a given sensor
 bool IsInSensor(FA::FlockingAgent& fa, const FA::SensorSettings& sensor, kf::Vector2f& localOffset)
 {
@@ -76,6 +75,11 @@ void FA::FlockingAgent::Update(float dt, FlockingAgent** agents, size_t count)
 	if (mIsPrey)
 		mLifeTime += dt;
 
+	mSpeedtotal.total += GetSpeed();
+	mSpeedtotal.i++;
+
+	//std::cout << (mSpeedtotal.total / mSpeedtotal.i)<< std::endl;
+
 	#pragma omp parallel for
 	for (int i = 0; i < count; ++i)
 	{
@@ -110,7 +114,7 @@ void FA::FlockingAgent::PredChaseUpdate(int i, float dt, FlockingAgent** agents,
 		if (mChaseCache.count == 0 || mChaseCache.vec.length_squared() > diff.length_squared())
 		{
 			mChaseCache.vec = diff;
-			if (diff.length_squared() < 4)
+			if (diff.length_squared() < mCollisionRange)
 			{
 				agents[i]->SetIsPrey(false);
 				Stats::getInstance().lifeTimes.push_back(agents[i]->mLifeTime);
@@ -228,4 +232,5 @@ void FA::FlockingAgent::Finalise(float dt)
 	}
 
 	AddForce(totalForce*dt);
+
 }

@@ -17,6 +17,7 @@ namespace FA
 		{
 			Range mass;
 			Range size;
+			float collisionRange;
 			bool isPrey = true;
 			Circle spawnAt,startingVel;
 			Range accel;

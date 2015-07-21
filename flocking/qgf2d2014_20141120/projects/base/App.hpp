@@ -12,6 +12,7 @@
 #include "Macros.hpp"
 #include "Scene.hpp"
 #include "GUI.h"
+#include "Heatmap.h"
 
 namespace FA
 {
@@ -38,6 +39,11 @@ namespace FA
 		RO_PTR_PROPERTY(FA::AgentFactory, AgentFactory);
 		RO_PTR_PROPERTY(FA::ObstacleFactory, ObstacleFactory);
 		RO_PTR_PROPERTY(FA::Scene, Scene);
+		RO_PTR_PROPERTY(Heatmap, HeatMap);
+
+		std::chrono::time_point<std::chrono::system_clock> start, end;
+		std::chrono::duration<double> elapsed_seconds;
+		float waitTime = 1.0f;
 
 	private:
 		App() :mIsRunning(false), mIsInit(false){}

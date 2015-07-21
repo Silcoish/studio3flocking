@@ -40,6 +40,7 @@ FA::FlockingAgent* FA::AgentFactory::Create(const FA::AgentFactory::Params& p)co
 	retval->SetVelocity(p.startingVel.Rand());
 	retval->SetMaxAccel(p.accel.Rand());
 	retval->SetIsPrey(p.isPrey);
+	retval->SetCollisionRange(p.collisionRange);
 
 
 	FA::App::Instance().GetScene()->AddAgent(retval);

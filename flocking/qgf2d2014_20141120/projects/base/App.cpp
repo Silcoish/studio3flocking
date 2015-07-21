@@ -23,7 +23,7 @@ bool FA::App::Init()
 	mAgentFactory = new FA::AgentFactory(mPhysWorld);
 	mObstacleFactory = new FA::ObstacleFactory(mPhysWorld);
 	mScene = new FA::Scene();
-
+	mHeatMap = new Heatmap();
 
 	mIsInit = true;
 	return mIsInit;
@@ -42,6 +42,14 @@ void FA::App::Run()
 
 	while (mWindow->isOpen())
 	{
+		end = std::chrono::system_clock::now();
+		elapsed_seconds = end - start;
+
+		if (elapsed_seconds.count() >= waitTime)
+		{
+			mScene->UpdateHeatmap(mHeatMap);
+			start = std::chrono::system_clock::now();
+		}
 		// Events are things such as keys being pressed, the window closing, etc.
 		// There could be several events waiting for us, so use a loop to process them all.
 		sf::Event ev;
@@ -74,6 +82,8 @@ void FA::App::Run()
 		//render scene
 		mScene->Render(*mWindow);
 		mGui->HandleDraw(mWindow);
+
+		mHeatMap->Update();
 		
 
 		Debug::Instance().DrawAll(*mWindow);
@@ -94,8 +104,14 @@ void FA::App::Run()
 	for (auto *a : agents)
 	{
 		if (a->GetIsPrey())
-			Stats::getInstance().lifeTimes.push_back(a->mLifeTime);
+			Stats::getInstance().lifeTimes.push_back(a->GetLifeTime());
+
+		Stats::getInstance().speeds.push_back((a->GetSpeedtotal().total / (float)a->GetSpeedtotal().i));
+		Stats::getInstance().sizes.push_back(a->GetCentreCircle()->getRadius());
 	}
+
+	//Save Heatmap
+	mHeatMap->SaveToFile();
 }
 
 FA::App::~App()

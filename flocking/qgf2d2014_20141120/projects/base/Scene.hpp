@@ -6,6 +6,7 @@
 //HACK lazy include
 #include "FlockingAgent.hpp"
 #include "Obstacle.hpp"
+#include "Heatmap.h"
 
 #include "Macros.hpp"
 
@@ -53,6 +54,8 @@ namespace FA
 		void ClearAgentList(){ mAgents.clear(); }
 		void ObstacleListCopy(std::vector<Obstacle*>& out) { out = mObstacles; }
 		void ClearObstacleList(){ mObstacles.clear(); }
+
+		void UpdateHeatmap(Heatmap* heatmap);
 
 	protected:
 		std::vector<FlockingAgent*> mAgents;
